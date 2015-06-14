@@ -19,13 +19,17 @@ FIND_PACKAGE(Qt5Core REQUIRED)
 FIND_PACKAGE(Qt5Widgets REQUIRED)
 FIND_PACKAGE(Qt5Gui REQUIRED)
 
-set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOMOC OFF)
 
 # set project dirs
 SET(PrjDir ${CMAKE_CURRENT_SOURCE_DIR})
+SET(PrjQtGenDir ${CMAKE_CURRENT_BINARY_DIR}/_qt)
 SET(PrjSrcDir ${PrjDir}/src)
 SET(PrjLibDir ${PrjDir}/lib)
 SET(PrjBinDir ${PrjDir}/bin)
+SET(PrjMocDir ${PrjQtGenDir}/moc)
+SET(PrjUicDir ${PrjQtGenDir}/uic)
+SET(PrjQrcDir ${PrjQtGenDir}/qrc)
 
 # define libraries
 SET(PrjLibraries 
