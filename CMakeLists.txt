@@ -35,18 +35,18 @@ SET(PrjLibraries
 SET(PrjExecutables 
     sample_executable)
 
-SET(PROJECTDNAMIC FALSE)
-SET(DEVELOP FALSE)
+SET(PROJECT_DYNAMIC FALSE CACHE BOOL "Build Modules as shared libs for executables or include all executables a subflder for each module.")
+SET(PROJECT_DEVELOP FALSE CACHE BOOL "Executables have a Console output for Debug and Release")
 
 # add libs and main
 SET(LIBRARYFILES)
 FOREACH(PrjLibrary ${PrjLibraries})
-    ADDLIBRARY(LIBRARYFILES NAME ${PrjLibrary} DIR ${PrjSrcDir}/${PrjLibrary} DYNAMIC ${PROJECTDNAMIC})
+    ADDLIBRARY(LIBRARYFILES NAME ${PrjLibrary} DIR ${PrjSrcDir}/${PrjLibrary} DYNAMIC ${PROJECT_DYNAMIC})
 ENDFOREACH(PrjLibrary ${PrjLibraries})
 
 FOREACH(PrjExecutable ${PrjExecutables})
     SET(EXECUTBLEFILES ${LIBRARYFILES})
-    ADDEXECUTABLE(EXECUTBLEFILES NAME ${PrjExecutable} DIR ${PrjSrcDir}/${PrjExecutable} DYNAMIC ${PROJECTDNAMIC})
+    ADDEXECUTABLE(EXECUTBLEFILES NAME ${PrjExecutable} DIR ${PrjSrcDir}/${PrjExecutable} DYNAMIC ${PROJECT_DYNAMIC})
 ENDFOREACH(PrjExecutable ${PrjExecutables})
 
 SET(MACOSX_BUNDLE_BUNDLE_NAME "Sample_Project")
@@ -62,14 +62,14 @@ SETLINKDEPENDENCIES()
 
 # set target properties on tagets (libs and exec)
 IF(MSVC)    
-    IF(${PROJECTDNAMIC})
+    IF(${PROJECT_DYNAMIC})
         FOREACH(PrjLibrary ${PrjLibraries})
             SET_TARGET_PROPERTIES(${PrjLibrary} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${PrjLibDir})
             SET_TARGET_PROPERTIES(${PrjLibrary} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PrjLibDir})
             SET_TARGET_PROPERTIES(${PrjLibrary} PROPERTIES PDB_OUTPUT_DIRECTORY ${PrjLibDir})
             SET_TARGET_PROPERTIES(${PrjLibrary} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PrjBinDir})
         ENDFOREACH(PrjLibrary ${PrjLibraries})
-    ENDIF(${PROJECTDNAMIC})
+    ENDIF(${PROJECT_DYNAMIC})
     
     FOREACH(PrjExecutable ${PrjExecutables})
         SET_TARGET_PROPERTIES(${PrjExecutable} PROPERTIES
@@ -78,21 +78,21 @@ IF(MSVC)
         )
         
         SET(LINKFLAG)        
-        IF(${DEVELOP})
+        IF(${PROJECT_DEVELOP})
             SET(LINKFLAG "/SUBSYSTEM:CONSOLE")
-        ELSE(${DEVELOP})
+        ELSE(${PROJECT_DEVELOP})
             SET(LINKFLAG "/SUBSYSTEM:WINDOWS")
-        ENDIF(${DEVELOP})      
+        ENDIF(${PROJECT_DEVELOP})      
         
         SET_TARGET_PROPERTIES(${PrjExecutable} PROPERTIES LINK_FLAGS_DEBUG ${LINKFLAG})
         SET_TARGET_PROPERTIES(${PrjExecutable} PROPERTIES LINK_FLAGS_RELWITHDEBINFO ${LINKFLAG})
         SET_TARGET_PROPERTIES(${PrjExecutable} PROPERTIES LINK_FLAGS_RELEASE ${LINKFLAG})
         SET_TARGET_PROPERTIES(${PrjExecutable} PROPERTIES LINK_FLAGS_MINSIZEREL ${LINKFLAG})
         
-        IF(${DEVELOP})
+        IF(${PROJECT_DEVELOP})
             SET_TARGET_PROPERTIES(${PrjExecutable} PROPERTIES COMPILE_DEFINITIONS_DEBUG "_CONSOLE")
             SET_TARGET_PROPERTIES(${PrjExecutable} PROPERTIES COMPILE_DEFINITIONS_RELWITHDEBINFO "_CONSOLE")
-        ENDIF(${DEVELOP})
+        ENDIF(${PROJECT_DEVELOP})
         
         SET_TARGET_PROPERTIES(${PrjExecutable} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${PrjLibDir})
         SET_TARGET_PROPERTIES(${PrjExecutable} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PrjLibDir})

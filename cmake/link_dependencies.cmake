@@ -6,9 +6,9 @@ MACRO(SETLINKDEPENDENCIES)
     qt5_use_modules(sample_executable Core Widgets Gui)
     
     # for the project
-    IF(${PROJECTDNAMIC})
+    IF(${PROJECT_DYNAMIC})
         TARGET_LINK_LIBRARIES(sample_executable general sample_module)
-    ENDIF(${PROJECTDNAMIC})
+    ENDIF(${PROJECT_DYNAMIC})
     
     TARGET_LINK_LIBRARIES(sample_executable Qt5::Core)
     TARGET_LINK_LIBRARIES(sample_executable Qt5::Widgets)
