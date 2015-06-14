@@ -1,4 +1,4 @@
-#include "examplelib/foo.h"
+#include <sample_module/foo.h>
 #include "bar.h"
 
 int main()

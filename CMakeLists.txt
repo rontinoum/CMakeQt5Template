@@ -1,7 +1,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
 CMAKE_POLICY(SET CMP0020 NEW)
 
-SET(PROJECT "Qt5Template")
+SET(PROJECT "Sample_Project")
 
 PROJECT(${PROJECT})
 
@@ -29,11 +29,11 @@ SET(PrjBinDir ${PrjDir}/bin)
 
 # define libraries
 SET(PrjLibraries 
-    examplelib)
+    sample_module)
 
 # define executables
 SET(PrjExecutables 
-    exampleexe)
+    sample_executable)
 
 SET(PROJECTDNAMIC FALSE)
 SET(DEVELOP TRUE)
@@ -49,12 +49,12 @@ FOREACH(PrjExecutable ${PrjExecutables})
     ADDEXECUTABLE(EXECUTBLEFILES NAME ${PrjExecutable} DIR ${PrjSrcDir}/${PrjExecutable} DYNAMIC ${PROJECTDNAMIC})
 ENDFOREACH(PrjExecutable ${PrjExecutables})
 
-SET(MACOSX_BUNDLE_BUNDLE_NAME "Qt5Template")
+SET(MACOSX_BUNDLE_BUNDLE_NAME "Sample_Project")
 SET(MACOSX_BUNDLE_BUNDLE_VERSION "1.0")
 SET(MACOSX_BUNDLE_LONG_VERSION_STRING "1.0")
 SET(MACOSX_BUNDLE_SHORT_VERSION_STRING "1.0")
 SET(MACOSX_BUNDLE_COPYRIGHT "Copyright (c) <Year> <Name>. All rights reserved.")
-SET(MACOSX_BUNDLE_GUI_IDENTIFIER "com.project.name")
+SET(MACOSX_BUNDLE_GUI_IDENTIFIER "com.sample.project")
 SET(MACOSX_BUNDLE_ICON_FILE AppIcon.icns)
 
 # set usage of qt modules
