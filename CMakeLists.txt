@@ -42,7 +42,7 @@ ENDFOREACH(PrjLibrary ${PrjLibraries})
 
 FOREACH(PrjExecutable ${PrjExecutables})
     SET(EXECUTBLEFILES ${LIBRARYFILES})
-    ADDEXECUTABLE(EXECUTBLEFILES NAME ${PrjExecutable} DIR ${PrjSrcDir} DYNAMIC ${PROJECTDNAMIC})
+    ADDEXECUTABLE(EXECUTBLEFILES NAME ${PrjExecutable} DIR ${PrjSrcDir}/${PrjExecutable} DYNAMIC ${PROJECTDNAMIC})
 ENDFOREACH(PrjExecutable ${PrjExecutables})
 
 SET(MACOSX_BUNDLE_BUNDLE_NAME "Qt5Template")
