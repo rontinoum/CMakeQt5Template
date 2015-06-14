@@ -5,60 +5,44 @@ SET(PROJECT "Qt5Template")
 
 PROJECT(${PROJECT})
 
-SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+# set cmake custom scripts direcory
+SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/)
 SET(CMAKE_INCLUDE_CURRENT_DIR ON)
-SET(CMAKE_AUTOMOC ON)
+
+# include custom functions
+INCLUDE(${CMAKE_MODULE_PATH}/qt.cmake)
+INCLUDE(${CMAKE_MODULE_PATH}/buildhelper.cmake)
+INCLUDE(${CMAKE_MODULE_PATH}/link_dependencies.cmake)
 
 # set necessary qt libraries
 FIND_PACKAGE(Qt5Widgets REQUIRED)
 
-# get project dir
+# set project dirs
 SET(PrjDir ${CMAKE_CURRENT_SOURCE_DIR})
-SET(PrjSrcDir ${PrjDir}/src/)
+SET(PrjSrcDir ${PrjDir}/src)
 SET(PrjLibDir ${PrjDir}/lib)
 SET(PrjBinDir ${PrjDir}/bin)
 
-# search for source files and set
-SET(SrcPostFixes h cpp)
-SET(PrjSrcFiles)
-FOREACH(SrcPostFix ${SrcPostFixes})
-    FILE(GLOB TmpSrcFiles ${PrjSrcDir}/*.${SrcPostFix})
-    SET(PrjSrcFiles ${PrjSrcFiles} ${TmpSrcFiles})
-ENDFOREACH(SrcPostFix ${SrcPostFixes})
+# define libraries
+SET(PrjLibraries 
+    examplelib)
 
-SET(SOURCE_FILES ${PrjSrcFiles})
+# define executables
+SET(PrjExecutables 
+    exampleexe)
 
-# for win add rc file
-IF(WIN32)
-    SET(SOURCE_FILES ${SOURCE_FILES} src/main.rc)
-ENDIF()
+SET(PROJECTDNAMIC TRUE)
 
-SET(UiPostFixes ui)
-SET(PrjUiFiles)
-FOREACH(UiPostFix ${UiPostFixes})
-    FILE(GLOB TmpUiFiles ${PrjSrcDir}/*.${UiPostFix})
-    SET(PrjUiFiles ${PrjUiFiles} ${TmpUiFiles})
-ENDFOREACH(UiPostFix ${UiPostFixes})
+# add libs and main
+SET(LIBRARYFILES)
+FOREACH(PrjLibrary ${PrjLibraries})
+    ADDLIBRARY(LIBRARYFILES NAME ${PrjLibrary} DIR ${PrjSrcDir}/${PrjLibrary} DYNAMIC ${PROJECTDNAMIC})
+ENDFOREACH(PrjLibrary ${PrjLibraries})
 
-SET(UI_FILES ${PrjUiFiles})
-SOURCE_GROUP("UI Files" FILES ${UI_FILES})
-
-qt5_wrap_ui(UI_HEADERS ${UI_FILES})
-SOURCE_GROUP("Generated UI Headers" FILES ${UI_HEADERS})
-
-qt5_add_resources(RESOURCE_FILES src/main.qrc)
-
-IF(APPLE)
-    SET(SOURCE_FILES ${SOURCE_FILES} AppIcon.icns)
-    SET_SOURCE_FILES_PROPERTIES(AppIcon.icns PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
-ENDIF()
-
-ADD_EXECUTABLE(${PROJECT} MACOSX_BUNDLE
-    ${SOURCE_FILES}
-    ${UI_HEADERS}
-    ${UI_FILES}
-    ${RESOURCE_FILES}
-)
+FOREACH(PrjExecutable ${PrjExecutables})
+    SET(EXECUTBLEFILES ${LIBRARYFILES})
+    ADDEXECUTABLE(EXECUTBLEFILES NAME ${PrjExecutable} DIR ${PrjSrcDir} DYNAMIC ${PROJECTDNAMIC})
+ENDFOREACH(PrjExecutable ${PrjExecutables})
 
 SET(MACOSX_BUNDLE_BUNDLE_NAME "Qt5Template")
 SET(MACOSX_BUNDLE_BUNDLE_VERSION "1.0")
@@ -68,16 +52,28 @@ SET(MACOSX_BUNDLE_COPYRIGHT "Copyright (c) <Year> <Name>. All rights reserved.")
 SET(MACOSX_BUNDLE_GUI_IDENTIFIER "com.project.name")
 SET(MACOSX_BUNDLE_ICON_FILE AppIcon.icns)
 
-qt5_use_modules(${PROJECT} Widgets)
+# set usage of qt modules
+SETLINKDEPENDENCIES()
 
-IF(MSVC)
-    SET_TARGET_PROPERTIES(${PROJECT} PROPERTIES
-        WIN32_EXECUTABLE YES
-        LINK_FLAGS "/ENTRY:mainCRTStartup"
-    )
+# set target properties on tagets (libs and exec)
+IF(MSVC)    
+    IF(${PROJECTDNAMIC})
+        FOREACH(PrjLibrary ${PrjLibraries})
+            SET_TARGET_PROPERTIES(${PrjLibrary} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${PrjLibDir})
+            SET_TARGET_PROPERTIES(${PrjLibrary} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PrjLibDir})
+            SET_TARGET_PROPERTIES(${PrjLibrary} PROPERTIES PDB_OUTPUT_DIRECTORY ${PrjLibDir})
+            SET_TARGET_PROPERTIES(${PrjLibrary} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PrjBinDir})
+        ENDFOREACH(PrjLibrary ${PrjLibraries})
+    ENDIF(${PROJECTDNAMIC})
     
-    SET_TARGET_PROPERTIES(${PROJECT} PROPERTIES
-        LIBRARY_OUTPUT_DIRECTORY ${PrjLibDir}
-        RUNTIME_OUTPUT_DIRECTORY ${PrjBinDir}
-    )
+    FOREACH(PrjExecutable ${PrjExecutables})
+        SET_TARGET_PROPERTIES(${PrjExecutable} PROPERTIES
+            WIN32_EXECUTABLE YES
+            LINK_FLAGS "/ENTRY:mainCRTStartup"
+        )
+        SET_TARGET_PROPERTIES(${PrjExecutable} PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${PrjLibDir})
+        SET_TARGET_PROPERTIES(${PrjExecutable} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PrjLibDir})
+        SET_TARGET_PROPERTIES(${PrjExecutable} PROPERTIES PDB_OUTPUT_DIRECTORY ${PrjBinDir})
+        SET_TARGET_PROPERTIES(${PrjExecutable} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${PrjBinDir})
+    ENDFOREACH(PrjExecutable ${PrjExecutables})
 ENDIF()
