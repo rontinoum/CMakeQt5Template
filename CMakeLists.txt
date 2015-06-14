@@ -37,6 +37,7 @@ SET(PrjExecutables
 
 SET(PROJECT_DYNAMIC FALSE CACHE BOOL "Build Modules as shared libs for executables or include all executables a subflder for each module.")
 SET(PROJECT_DEVELOP FALSE CACHE BOOL "Executables have a Console output for Debug and Release")
+SET(PROJECT_INSTALL_PATH "" CACHE PATH "The Project install path")
 
 # add libs and main
 SET(LIBRARYFILES)
@@ -62,6 +63,19 @@ SETLINKDEPENDENCIES()
 
 # set general output postfix
 set(DEBUGOUTPUTPOSTFIX "_d")
+
+# add install for each project
+IF("${PROJECT_INSTALL_PATH}" STREQUAL "")
+    MESSAGE(FATAL_ERROR "PROJECT_INSTALL_PATH not set")
+ENDIF("${PROJECT_INSTALL_PATH}" STREQUAL "")
+
+FOREACH(PrjExecutable ${PrjExecutables})
+    INSTALL(TARGETS ${PrjExecutable} RUNTIME DESTINATION ${PROJECT_INSTALL_PATH} INCLUDES DESTINATION ${PROJECT_INSTALL_PATH}/include)
+ENDFOREACH(PrjExecutable ${PrjExecutables})
+
+FOREACH(PrjLibrary ${PrjLibraries})
+    INSTALL(TARGETS ${PrjLibrary} RUNTIME DESTINATION ${PROJECT_INSTALL_PATH} INCLUDES DESTINATION ${PROJECT_INSTALL_PATH}/include)
+ENDFOREACH(PrjLibrary ${PrjLibraries})
 
 # set target properties on tagets (libs and exec)
 IF(MSVC)    
