@@ -15,7 +15,11 @@ INCLUDE(${CMAKE_MODULE_PATH}/buildhelper.cmake)
 INCLUDE(${CMAKE_MODULE_PATH}/link_dependencies.cmake)
 
 # set necessary qt libraries
+FIND_PACKAGE(Qt5Core REQUIRED)
 FIND_PACKAGE(Qt5Widgets REQUIRED)
+FIND_PACKAGE(Qt5Gui REQUIRED)
+
+set(CMAKE_AUTOMOC ON)
 
 # set project dirs
 SET(PrjDir ${CMAKE_CURRENT_SOURCE_DIR})
@@ -31,7 +35,7 @@ SET(PrjLibraries
 SET(PrjExecutables 
     exampleexe)
 
-SET(PROJECTDNAMIC TRUE)
+SET(PROJECTDNAMIC FALSE)
 SET(DEVELOP TRUE)
 
 # add libs and main

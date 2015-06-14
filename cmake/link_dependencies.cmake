@@ -9,4 +9,8 @@ MACRO(SETLINKDEPENDENCIES)
     IF(${PROJECTDNAMIC})
         TARGET_LINK_LIBRARIES(exampleexe general examplelib)
     ENDIF(${PROJECTDNAMIC})
+    
+    target_link_libraries(noise Qt5::Core)
+    target_link_libraries(noise Qt5::Widgets)
+    target_link_libraries(noise Qt5::Gui)
 ENDMACRO(SETLINKDEPENDENCIES)

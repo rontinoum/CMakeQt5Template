@@ -129,7 +129,7 @@ FUNCTION(ADDFOLDER FOLDERFILES)
             SET(PARENTFILES ${${FOLDERFILES}})
         ENDIF(NOT ${PROJECTDNAMIC})
         
-        ADD_EXECUTABLE(${NAME} MACOSX_BUNDLE
+        ADD_EXECUTABLE(${NAME} WIN32
             ${INCLUDE_FILES}
             ${SOURCE_FILES}
             ${RESOURCE_FILES}
@@ -138,6 +138,9 @@ FUNCTION(ADDFOLDER FOLDERFILES)
             ${UI_FILES}
             ${PARENTFILES}
         )
+        
+        TARGET_INCLUDE_DIRECTORIES(${NAME} PUBLIC ${PrjSrcDir})
+        
     ELSE(${ISEXE})
         IF(${DYNAMIC})
             ADD_LIBRARY(${NAME} SHARED
