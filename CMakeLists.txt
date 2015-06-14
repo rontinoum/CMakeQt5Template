@@ -76,7 +76,6 @@ IF(MSVC)
         LINK_FLAGS "/ENTRY:mainCRTStartup"
     )
     
-    MESSAGE(${PrjLibDir})
     SET_TARGET_PROPERTIES(${PROJECT} PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY ${PrjLibDir}
         RUNTIME_OUTPUT_DIRECTORY ${PrjBinDir}
