@@ -6,5 +6,7 @@ MACRO(SETLINKDEPENDENCIES)
     qt5_use_modules(exampleexe Core Widgets Gui)
     
     # for the project
-    TARGET_LINK_LIBRARIES(exampleexe general examplelib)
+    IF(${PROJECTDNAMIC})
+        TARGET_LINK_LIBRARIES(exampleexe general examplelib)
+    ENDIF(${PROJECTDNAMIC})
 ENDMACRO(SETLINKDEPENDENCIES)
