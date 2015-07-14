@@ -1,7 +1,7 @@
 FUNCTION(GATHERMOCHEADER MOCFILES)
     set(options)
-    set(oneValueArgs HEADER)
-    set(multiValueArgs)
+    set(oneValueArgs)
+    set(multiValueArgs HEADER)
 
     cmake_parse_arguments(GATHERMOCHEADER "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
     

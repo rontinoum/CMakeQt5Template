@@ -1,4 +1,4 @@
-#include "subfolder/bar.h"
+#include "baz.h"
 
 #include <iostream>
 

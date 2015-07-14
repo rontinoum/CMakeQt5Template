@@ -1,4 +1,4 @@
-#include "subsubfolder/Bazz.h"
+#include "Bazz.h"
 
 #include <iostream>
 
