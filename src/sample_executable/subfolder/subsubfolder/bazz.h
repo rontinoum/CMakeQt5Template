@@ -1,12 +1,12 @@
 #include <QtCore/QObject>
 
-class Bar : public QObject
+class Bazz : public QObject
 {
     Q_OBJECT
 
 public:
-    Bar();
-    ~Bar();
+    Bazz();
+    ~Bazz();
     const int& getValue();
     void setValue(const int& value);
 

@@ -1,31 +1,31 @@
-#include "bar.h"
+#include "subsubfolder/Bazz.h"
 
 #include <iostream>
 
-Bar::Bar()
+Bazz::Bazz()
 {
     _value = 0;
 
-    connect(this, &Bar::signal, this, &Bar::slot);
+    connect(this, &Bazz::signal, this, &Bazz::slot);
 }
 
-Bar::~Bar()
+Bazz::~Bazz()
 {
 
 }
 
-const int& Bar::getValue()
+const int& Bazz::getValue()
 {
     return _value;
 }
 
-void Bar::setValue(const int& value)
+void Bazz::setValue(const int& value)
 {
     _value = value;
     emit signal();
 }
 
-void Bar::slot()
+void Bazz::slot()
 {
     std::cout << "Value set to " << QString::number(_value).toLatin1().data() << std::endl;
 }

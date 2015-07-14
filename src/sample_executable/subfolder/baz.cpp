@@ -1,31 +1,31 @@
-#include "bar.h"
+#include "subfolder/bar.h"
 
 #include <iostream>
 
-Bar::Bar()
+Baz::Baz()
 {
     _value = 0;
 
-    connect(this, &Bar::signal, this, &Bar::slot);
+    connect(this, &Baz::signal, this, &Baz::slot);
 }
 
-Bar::~Bar()
+Baz::~Baz()
 {
 
 }
 
-const int& Bar::getValue()
+const int& Baz::getValue()
 {
     return _value;
 }
 
-void Bar::setValue(const int& value)
+void Baz::setValue(const int& value)
 {
     _value = value;
     emit signal();
 }
 
-void Bar::slot()
+void Baz::slot()
 {
     std::cout << "Value set to " << QString::number(_value).toLatin1().data() << std::endl;
 }
