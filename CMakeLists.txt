@@ -1,9 +1,13 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
 CMAKE_POLICY(SET CMP0020 NEW)
+CMAKE_POLICY(SET CMP0043 OLD)
 
 SET(PROJECT "Sample_Project")
 
 PROJECT(${PROJECT})
+
+# set cmake prefix path to Qt5 dir (required to find qt5)
+SET(CMAKE_PREFIX_PATH $ENV{QTDIR})
 
 # set cmake custom scripts direcory
 SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/)
@@ -27,6 +31,7 @@ SET(PrjQtGenDir ${CMAKE_CURRENT_BINARY_DIR}/_qt)
 SET(PrjSrcDir ${PrjDir}/src)
 SET(PrjLibDir ${PrjDir}/lib)
 SET(PrjBinDir ${PrjDir}/bin)
+SET(PrjInsDir ${PrjDir}/install)
 SET(PrjMocDir ${PrjQtGenDir}/moc)
 SET(PrjUicDir ${PrjQtGenDir}/uic)
 SET(PrjQrcDir ${PrjQtGenDir}/qrc)
@@ -42,7 +47,7 @@ SET(PrjExecutables
 SET(PROJECT_DYNAMIC FALSE CACHE BOOL "Build Modules as shared libs for executables or include all executables a subflder for each module.")
 SET(PROJECT_DEVELOP FALSE CACHE BOOL "Executables have a Console output for Debug and Release")
 SET(PROJECT_COMBINED_HEADER_SOURCES FALSE CACHE BOOL "If true combines header and sources into one folder in the project tree")
-SET(PROJECT_INSTALL_PATH "" CACHE PATH "The Project install path")
+SET(PROJECT_INSTALL_PATH "${PrjInsDir}" CACHE PATH "The Project install path")
 
 # add libs and main
 SET(LIBRARYFILES)
