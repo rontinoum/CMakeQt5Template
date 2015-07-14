@@ -41,6 +41,7 @@ SET(PrjExecutables
 
 SET(PROJECT_DYNAMIC FALSE CACHE BOOL "Build Modules as shared libs for executables or include all executables a subflder for each module.")
 SET(PROJECT_DEVELOP FALSE CACHE BOOL "Executables have a Console output for Debug and Release")
+SET(PROJECT_COMBINED_HEADER_SOURCES FALSE CACHE BOOL "If true combines header and sources into one folder in the project tree")
 SET(PROJECT_INSTALL_PATH "" CACHE PATH "The Project install path")
 
 # add libs and main
