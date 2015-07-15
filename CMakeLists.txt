@@ -66,7 +66,7 @@ IF(${PROJECT_USE_PROJECT_DEFINES_HEADER})
     
     #check existance of the project header template
     IF(NOT EXISTS ${ProjectConfigHeaderTemplate})
-        MESSAGE(FATAL_ERROR ${ProjectConfigHeaderTemplate} " doas not exist")
+        MESSAGE(FATAL_ERROR ${ProjectConfigHeaderTemplate} " does not exist")
     ENDIF(NOT EXISTS ${ProjectConfigHeaderTemplate})
     
     CONFIGURE_FILE(${ProjectConfigHeaderTemplate} ${ProjectConfigHeader})
