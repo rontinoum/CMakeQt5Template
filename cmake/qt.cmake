@@ -36,8 +36,8 @@ ENDFUNCTION(GATHERMOCHEADER MOCFILES)
 
 FUNCTION(GATHERUIFILES UIC_FILES) 
     set(options)
-    set(oneValueArgs UIFILES)
-    set(multiValueArgs)
+    set(oneValueArgs)
+    set(multiValueArgs UIFILES)
 
     cmake_parse_arguments(GATHERUIFILES "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
     
@@ -68,8 +68,8 @@ ENDFUNCTION(GATHERUIFILES UIC_FILES)
 
 FUNCTION(GATHERQRCFILES QRC_OUT_FILES) 
     set(options)
-    set(oneValueArgs QRCFILES)
-    set(multiValueArgs)
+    set(oneValueArgs)
+    set(multiValueArgs QRCFILES)
 
     cmake_parse_arguments(GATHERQRCFILES "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
     
