@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8.12)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.0.2)
 CMAKE_POLICY(SET CMP0020 NEW)
 CMAKE_POLICY(SET CMP0043 OLD)
 
@@ -32,6 +32,7 @@ SET(PrjSrcDir ${PrjDir}/src)
 SET(PrjLibDir ${PrjDir}/lib)
 SET(PrjBinDir ${PrjDir}/bin)
 SET(PrjInsDir ${PrjDir}/install)
+SET(PrjCnfDir ${PrjDir}/config)
 SET(PrjMocDir ${PrjQtGenDir}/moc)
 SET(PrjUicDir ${PrjQtGenDir}/uic)
 SET(PrjQrcDir ${PrjQtGenDir}/qrc)
@@ -44,10 +45,34 @@ SET(PrjLibraries
 SET(PrjExecutables 
     sample_executable)
 
+# set project setting
+SET(PROJECT_USE_PROJECT_DEFINES_HEADER TRUE CACHE BOOL "True if the global defines header should be used.")
 SET(PROJECT_DYNAMIC FALSE CACHE BOOL "Build Modules as shared libs for executables or include all executables a subflder for each module.")
 SET(PROJECT_DEVELOP FALSE CACHE BOOL "Executables have a Console output for Debug and Release")
 SET(PROJECT_COMBINED_HEADER_SOURCES FALSE CACHE BOOL "If true combines header and sources into one folder in the project tree")
 SET(PROJECT_INSTALL_PATH "${PrjInsDir}" CACHE PATH "The Project install path")
+
+# Configure global defines from project settings
+IF(${PROJECT_USE_PROJECT_DEFINES_HEADER})
+    # set config header variables
+    IF(${PROJECT_DYNAMIC})
+        SET(S_PROJECT_DYNAMIC 1)
+    ELSE(${PROJECT_DYNAMIC})
+        SET(S_PROJECT_DYNAMIC 0)
+    ENDIF(${PROJECT_DYNAMIC})
+    
+    SET(ProjectConfigHeader ${PrjCnfDir}/project_config.h)
+    SET(ProjectConfigHeaderTemplate ${ProjectConfigHeader}.in)
+    
+    #check existance of the project header template
+    IF(NOT EXISTS ${ProjectConfigHeaderTemplate})
+        MESSAGE(FATAL_ERROR ${ProjectConfigHeaderTemplate} " doas not exist")
+    ENDIF(NOT EXISTS ${ProjectConfigHeaderTemplate})
+    
+    CONFIGURE_FILE(${ProjectConfigHeaderTemplate} ${ProjectConfigHeader})
+    
+    INCLUDE_DIRECTORIES(${PrjCnfDir})
+ENDIF(${PROJECT_USE_PROJECT_DEFINES_HEADER})
 
 # add libs and main
 SET(LIBRARYFILES)

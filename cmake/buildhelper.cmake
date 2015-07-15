@@ -59,6 +59,10 @@ FUNCTION(ADDTOSOURCEGROUP)
     MATH(EXPR SOURCE_DIR_LENGTH "${SOURCE_DIR_LENGTH} + 1")
     
     FOREACH(FILENAME ${ADDTOSOURCEGROUP_FILENAMES})
+        IF("${FILENAME}" STREQUAL "${ProjectConfigHeader}")
+            BREAK()
+        ENDIF("${FILENAME}" STREQUAL "${ProjectConfigHeader}")
+        
         # split file name into folders and file name
         STRING(LENGTH ${FILENAME} FILE_PATH_LENGTH)
         MATH(EXPR SUB_STRING_LENGTH "${FILE_PATH_LENGTH} - ${SOURCE_DIR_LENGTH}")
