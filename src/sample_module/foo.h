@@ -1,7 +1,11 @@
+#pragma once
+
+#include "defines.h"
+
 #ifndef _FOO_H_
 #define _FOO_H_
 
-class __declspec(dllexport) Foo
+class D_EXPORT Foo
 {
 public:
     Foo();
