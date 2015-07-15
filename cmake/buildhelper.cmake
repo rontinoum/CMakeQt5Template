@@ -206,6 +206,8 @@ FUNCTION(ADDFOLDER FOLDERFILES)
                 ${UIC_FILES}
                 ${QRC_FILES}
             )
+            
+            TARGET_INCLUDE_DIRECTORIES(${ADDFOLDER_NAME} PUBLIC ${PrjSrcDir})
         ENDIF(${ADDFOLDER_DYNAMIC})
         
         SET(TMPFILES)
