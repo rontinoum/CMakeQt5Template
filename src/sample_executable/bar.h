@@ -1,4 +1,8 @@
+#include "sample_executable/module_config.h"
+
 #include <QtCore/QObject>
+
+SAMPLE_EXECUTABLE_NAMESPACE_BEGIN
 
 class Bar : public QObject
 {
@@ -19,3 +23,5 @@ signals:
 private:
     int _value;
 };
+
+SAMPLE_EXECUTABLE_NAMESPACE_END

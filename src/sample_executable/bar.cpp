@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+SAMPLE_EXECUTABLE_NAMESPACE_BEGIN
+
 Bar::Bar()
 {
     _value = 0;
@@ -29,3 +31,5 @@ void Bar::slot()
 {
     std::cout << "Value set to " << QString::number(_value).toLatin1().data() << std::endl;
 }
+
+SAMPLE_EXECUTABLE_NAMESPACE_END

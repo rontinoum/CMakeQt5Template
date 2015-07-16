@@ -6,7 +6,7 @@
 int main()
 {
     Foo* foo = new Foo();
-    Bar* bar = new Bar();
+    sample_executable::Bar* bar = new sample_executable::Bar();
     Baz* baz = new Baz();
     Bazz* bazz = new Bazz();
 
