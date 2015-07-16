@@ -11,7 +11,6 @@ SET(CMAKE_PREFIX_PATH $ENV{QTDIR})
 
 # set cmake custom scripts direcory
 SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/)
-SET(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # include custom functions
 INCLUDE(${CMAKE_MODULE_PATH}/qt.cmake)
