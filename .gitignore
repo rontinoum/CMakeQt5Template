@@ -2,4 +2,6 @@
 /bin
 /lib
 /install
+
 /config/project_config.h
+/config/*/module_config.h

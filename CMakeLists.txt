@@ -73,6 +73,11 @@ IF(${PROJECT_USE_PROJECT_DEFINES_HEADER})
     INCLUDE_DIRECTORIES(${PrjCnfDir})
 ENDIF(${PROJECT_USE_PROJECT_DEFINES_HEADER})
 
+# set modul_config.h variable
+SET(ModuleConfigHeaderName module_config.h)
+SET(ModuleConfigHeader ${PrjCnfDir}/${ModuleConfigHeaderName})
+SET(ModuleConfigHeaderTemplate ${ModuleConfigHeader}.in)
+
 # add libs and main
 SET(LIBRARYFILES)
 FOREACH(PrjLibrary ${PrjLibraries})
