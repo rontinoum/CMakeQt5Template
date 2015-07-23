@@ -17,10 +17,16 @@ INCLUDE(${CMAKE_MODULE_PATH}/qt.cmake)
 INCLUDE(${CMAKE_MODULE_PATH}/buildhelper.cmake)
 INCLUDE(${CMAKE_MODULE_PATH}/link_dependencies.cmake)
 
-# set necessary qt libraries
-FIND_PACKAGE(Qt5Core REQUIRED)
-FIND_PACKAGE(Qt5Widgets REQUIRED)
-FIND_PACKAGE(Qt5Gui REQUIRED)
+# define libraries
+SET(PrjLibraries 
+    sample_module)
+
+# define executables
+SET(PrjExecutables 
+    sample_executable)
+
+DEFINEMODULEQTDEPENDENCY()
+LOADQTPACKAGES()
 
 set(CMAKE_AUTOMOC OFF)
 
@@ -35,14 +41,6 @@ SET(PrjCnfDir ${PrjDir}/config)
 SET(PrjMocDir ${PrjQtGenDir}/moc)
 SET(PrjUicDir ${PrjQtGenDir}/uic)
 SET(PrjQrcDir ${PrjQtGenDir}/qrc)
-
-# define libraries
-SET(PrjLibraries 
-    sample_module)
-
-# define executables
-SET(PrjExecutables 
-    sample_executable)
 
 # set project setting
 SET(PROJECT_USE_PROJECT_DEFINES_HEADER TRUE CACHE BOOL "True if the global defines header should be used.")
