@@ -28,10 +28,32 @@ MACRO(SETMODULEQTTARGETSLIST)
     ENDWHILE(index LESS ${ARGC})
 ENDMACRO(SETMODULEQTTARGETSLIST)
 
-MACRO(DEFINEMODULEQTDEPENDENCY)
-    # define qt dependencies for each module here
-    SETMODULEQTTARGETSLIST(sample_executable Core Widgets Gui)
-ENDMACRO(DEFINEMODULEQTDEPENDENCY)
+MACRO(SETMODULELINKTARGETSLIST)
+    SET(ARGUMENTS "${ARGN}")
+    
+    # get module name
+    LIST(GET ARGUMENTS 0 MODULENAME)
+    
+    # check if module is present in modules or libraries
+    LIST(FIND PrjExecutables ${MODULENAME} found_in_exec)
+    LIST(FIND PrjLibraries ${MODULENAME} found_in_libs)
+    
+    IF("${found_in_exec}" STREQUAL "-1" AND "${found_in_libs}" STREQUAL "-1")
+        MESSAGE(FATAL_ERROR "Could not find Module: " ${MODULENAME})
+    ENDIF("${found_in_exec}" STREQUAL "-1" AND "${found_in_libs}" STREQUAL "-1")
+    
+    # iterate over list
+    SET(index 1)
+    LIST(LENGTH ARGUMENTS ARGUMENTS_LENGTH)
+    WHILE(index LESS ${ARGC})
+        LIST(GET ARGUMENTS ${index} ARGUMENT)
+        
+        # append Target to Module
+        LIST(APPEND ${MODULENAME}_LINKTARGETS ${ARGUMENT})
+        
+        MATH(EXPR index "${index}+1")
+    ENDWHILE(index LESS ${ARGC})
+ENDMACRO(SETMODULELINKTARGETSLIST)
 
 MACRO(LOADQTPACKAGES)
     SET(QTPACKAGELIST ${QTTARGETS})
@@ -43,10 +65,12 @@ MACRO(LOADQTPACKAGES)
 ENDMACRO(LOADQTPACKAGES)
 
 MACRO(SETLINKDEPENDENCIES)    
-    # for the project
-    IF(${PROJECT_DYNAMIC})
-        TARGET_LINK_LIBRARIES(sample_executable general sample_module)
-    ENDIF(${PROJECT_DYNAMIC})
+    # for the project    
+    FOREACH(PrjExecutable ${PrjExecutables})
+        FOREACH(LINKTARGET ${${PrjExecutable}_LINKTARGETS})
+            TARGET_LINK_LIBRARIES(${PrjExecutable} genral ${LINKTARGET})
+        ENDFOREACH(LINKTARGET ${${PrjExecutable}_LINKTARGETS})
+    ENDFOREACH(PrjExecutable ${PrjExecutables})
     
     IF(${PROJECT_DYNAMIC})
         FOREACH(PrjExecutable ${PrjExecutables})

@@ -2,30 +2,26 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.0.2)
 CMAKE_POLICY(SET CMP0020 NEW)
 CMAKE_POLICY(SET CMP0043 OLD)
 
-SET(PROJECT "Sample_Project")
+# set cmake custom scripts direcory
+SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/)
+
+# include custom functions
+INCLUDE(${CMAKE_MODULE_PATH}/configurate.cmake)
+INCLUDE(${CMAKE_MODULE_PATH}/qt.cmake)
+INCLUDE(${CMAKE_MODULE_PATH}/build.cmake)
+INCLUDE(${CMAKE_MODULE_PATH}/link.cmake)
+
+CONFIGURATE()
+DEFINEMODULEQTDEPENDENCY()
+DEFINEMODULELINKDEPENDENCY()
+
+SET(PROJECT "${PrjName}")
 
 PROJECT(${PROJECT})
 
 # set cmake prefix path to Qt5 dir (required to find qt5)
 SET(CMAKE_PREFIX_PATH $ENV{QTDIR})
 
-# set cmake custom scripts direcory
-SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/)
-
-# include custom functions
-INCLUDE(${CMAKE_MODULE_PATH}/qt.cmake)
-INCLUDE(${CMAKE_MODULE_PATH}/buildhelper.cmake)
-INCLUDE(${CMAKE_MODULE_PATH}/link_dependencies.cmake)
-
-# define libraries
-SET(PrjLibraries 
-    sample_module)
-
-# define executables
-SET(PrjExecutables 
-    sample_executable)
-
-DEFINEMODULEQTDEPENDENCY()
 LOADQTPACKAGES()
 
 set(CMAKE_AUTOMOC OFF)
@@ -87,12 +83,12 @@ FOREACH(PrjExecutable ${PrjExecutables})
     ADDEXECUTABLE(EXECUTBLEFILES NAME ${PrjExecutable} DIR ${PrjSrcDir}/${PrjExecutable} DYNAMIC ${PROJECT_DYNAMIC})
 ENDFOREACH(PrjExecutable ${PrjExecutables})
 
-SET(MACOSX_BUNDLE_BUNDLE_NAME "Sample_Project")
+SET(MACOSX_BUNDLE_BUNDLE_NAME "${PrjName}")
 SET(MACOSX_BUNDLE_BUNDLE_VERSION "1.0")
 SET(MACOSX_BUNDLE_LONG_VERSION_STRING "1.0")
 SET(MACOSX_BUNDLE_SHORT_VERSION_STRING "1.0")
 SET(MACOSX_BUNDLE_COPYRIGHT "Copyright (c) <Year> <Name>. All rights reserved.")
-SET(MACOSX_BUNDLE_GUI_IDENTIFIER "com.sample.project")
+SET(MACOSX_BUNDLE_GUI_IDENTIFIER "com.${PrjName}.project")
 SET(MACOSX_BUNDLE_ICON_FILE AppIcon.icns)
 
 # set usage of qt modules
