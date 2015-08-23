@@ -72,6 +72,12 @@ MACRO(SETLINKDEPENDENCIES)
                 TARGET_LINK_LIBRARIES(${PrjExecutable} general ${LINKTARGET})
             ENDFOREACH(LINKTARGET ${${PrjExecutable}_LINKTARGETS})
         ENDFOREACH(PrjExecutable ${PrjExecutables})
+        
+        FOREACH(PrjLibrary ${PrjLibraries})
+            FOREACH(LINKTARGET ${${PrjLibrary}_LINKTARGETS})
+                TARGET_LINK_LIBRARIES(${PrjLibrary} general ${LINKTARGET})
+            ENDFOREACH(LINKTARGET ${${PrjLibrary}_LINKTARGETS})
+        ENDFOREACH(PrjLibrary ${PrjLibraries})
     
         FOREACH(PrjExecutable ${PrjExecutables})
             FOREACH(QTTARGET ${${PrjExecutable}_QTTARGETS})
