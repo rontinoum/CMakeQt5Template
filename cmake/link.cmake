@@ -68,7 +68,7 @@ MACRO(SETLINKDEPENDENCIES)
     # for the project    
     FOREACH(PrjExecutable ${PrjExecutables})
         FOREACH(LINKTARGET ${${PrjExecutable}_LINKTARGETS})
-            TARGET_LINK_LIBRARIES(${PrjExecutable} genral ${LINKTARGET})
+            TARGET_LINK_LIBRARIES(${PrjExecutable} general ${LINKTARGET})
         ENDFOREACH(LINKTARGET ${${PrjExecutable}_LINKTARGETS})
     ENDFOREACH(PrjExecutable ${PrjExecutables})
     
