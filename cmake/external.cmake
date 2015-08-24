@@ -51,8 +51,29 @@ MACRO(SETMODULEEXTERNALLIBLIST)
     WHILE(index LESS ${ARGC})
         LIST(GET ARGUMENTS ${index} ARGUMENT)
         
-        # append Target to Module
-        LIST(APPEND ${MODULENAME}_EXTERNALLIBS ${ARGUMENT})
+        IF("${ARGUMENT}" STREQUAL "debug")
+            MATH(EXPR index "${index}+1")
+            IF(NOT index LESS ${ARGC})
+                MESSAGE(FATAL_ERROR "index out of range")
+            ENDIF(NOT index LESS ${ARGC})
+            LIST(GET ARGUMENTS ${index} ARGUMENT)
+            
+            # append debug Target to Module
+            LIST(APPEND ${MODULENAME}_EXTERNALLIBS_DBG ${ARGUMENT})
+        ELSEIF("${ARGUMENT}" STREQUAL "optimized")
+            MATH(EXPR index "${index}+1")
+            IF(NOT index LESS ${ARGC})
+                MESSAGE(FATAL_ERROR "index out of range")
+            ENDIF(NOT index LESS ${ARGC})
+            LIST(GET ARGUMENTS ${index} ARGUMENT)
+            
+            # append release Target to Module
+            LIST(APPEND ${MODULENAME}_EXTERNALLIBS_REL ${ARGUMENT})
+        ELSE("${ARGUMENT}" STREQUAL "optimized")
+            # append debug and release Target to Module
+            LIST(APPEND ${MODULENAME}_EXTERNALLIBS_DBG ${ARGUMENT})
+            LIST(APPEND ${MODULENAME}_EXTERNALLIBS_REL ${ARGUMENT})
+        ENDIF("${ARGUMENT}" STREQUAL "debug")
         
         MATH(EXPR index "${index}+1")
     ENDWHILE(index LESS ${ARGC})
