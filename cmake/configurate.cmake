@@ -1,4 +1,4 @@
-MACRO(CONFIGURATE)
+MACRO(BASICCONFIGURATION)
     # set project name
     SET(PrjName Sample_Project)
 
@@ -9,7 +9,7 @@ MACRO(CONFIGURATE)
     # define executables
     SET(PrjExecutables 
         sample_executable)
-ENDMACRO(CONFIGURATE)
+ENDMACRO(BASICCONFIGURATION)
 
 MACRO(INITIALIZEEXTERNAL)
     # external defines/finds ... are going here
