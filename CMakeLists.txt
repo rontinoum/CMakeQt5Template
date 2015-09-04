@@ -122,6 +122,9 @@ ENDIF(${PROJECT_DYNAMIC})
 
 # set target properties on tagets (libs and exec)
 IF(MSVC)
+    # enable mulicore usage
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${USER_CXX_FLAGS} /MP")
+    
     IF(${PROJECT_DYNAMIC})
         FOREACH(PrjLibrary ${PrjLibraries})
             SET_TARGET_PROPERTIES(${PrjLibrary} PROPERTIES DEBUG_OUTPUT_NAME   ${PrjLibrary}${DEBUGOUTPUTPOSTFIX})

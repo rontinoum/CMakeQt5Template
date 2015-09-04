@@ -17,12 +17,15 @@ FUNCTION(FINDFILES files)
 
     cmake_parse_arguments(FINDSOURCEFILES "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
     
+    SET(FoundSrcFiles)
     FOREACH(FINDSOURCEFILES_POSTFIX ${FINDSOURCEFILES_POSTFIXES})        
         SET(TmpSrcFiles)
         FILE(GLOB_RECURSE TmpSrcFiles ${FINDSOURCEFILES_ABSPATH}/*.${FINDSOURCEFILES_POSTFIX})
         
-        SET(${files} ${${files}} ${TmpSrcFiles} PARENT_SCOPE)
+        SET(FoundSrcFiles ${FoundSrcFiles} ${TmpSrcFiles})
     ENDFOREACH(FINDSOURCEFILES_POSTFIX ${FINDSOURCEFILES_POSTFIXES})
+    
+    SET(${files} ${${files}} ${FoundSrcFiles} PARENT_SCOPE)
 ENDFUNCTION(FINDFILES files)
 
 MACRO(CONFIGUREMODULECONFIG ModuleName)    
