@@ -1,11 +1,12 @@
-#include <sample_module/foo.h>
-#include "bar.h"
-#include "subfolder/baz.h"
-#include "subfolder/subsubfolder/bazz.h"
+#include "sample_module/foo.h"
+
+#include "sample_executable/bar.h"
+#include "sample_executable/subfolder/baz.h"
+#include "sample_executable/subfolder/subsubfolder/bazz.h"
 
 int main()
 {
-    Foo* foo = new Foo();
+    sample_module::Foo* foo = new sample_module::Foo();
     sample_executable::Bar* bar = new sample_executable::Bar();
     Baz* baz = new Baz();
     Bazz* bazz = new Bazz();

@@ -1,7 +1,0 @@
-#define D_DYNAMIC_LINKING  ${S_PROJECT_DYNAMIC}
-
-#if D_DYNAMIC_LINKING
-#define D_EXPORT __declspec(dllexport)
-#else
-#define D_EXPORT
-#endif

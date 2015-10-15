@@ -62,16 +62,6 @@ IF(${PROJECT_USE_PROJECT_DEFINES_HEADER})
         SET(S_PROJECT_DYNAMIC 0)
     ENDIF(${PROJECT_DYNAMIC})
     
-    SET(ProjectConfigHeader ${PrjCnfDir}/project_config.h)
-    SET(ProjectConfigHeaderTemplate ${ProjectConfigHeader}.in)
-    
-    #check existance of the project header template
-    IF(NOT EXISTS ${ProjectConfigHeaderTemplate})
-        MESSAGE(FATAL_ERROR ${ProjectConfigHeaderTemplate} " does not exist")
-    ENDIF(NOT EXISTS ${ProjectConfigHeaderTemplate})
-    
-    CONFIGURE_FILE(${ProjectConfigHeaderTemplate} ${ProjectConfigHeader})
-    
     INCLUDE_DIRECTORIES(${PrjCnfDir})
 ENDIF(${PROJECT_USE_PROJECT_DEFINES_HEADER})
 

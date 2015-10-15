@@ -2,3 +2,13 @@
 
 #define ${S_MODULE_NAME_UPPER}_NAMESPACE_BEGIN namespace ${S_MODULE_NAME} {
 #define ${S_MODULE_NAME_UPPER}_NAMESPACE_END }
+
+#ifdef WIN32
+#ifdef ${S_MODULE_NAME}_EXPORTS
+# define ${S_MODULE_NAME_UPPER}_API __declspec(dllexport)
+#else
+# define ${S_MODULE_NAME_UPPER}_API
+#endif
+#else
+# define ${S_MODULE_NAME_UPPER}_API 
+#endif
