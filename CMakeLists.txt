@@ -11,28 +11,14 @@ INCLUDE(${CMAKE_MODULE_PATH}/qt.cmake)
 INCLUDE(${CMAKE_MODULE_PATH}/build.cmake)
 INCLUDE(${CMAKE_MODULE_PATH}/link.cmake)
 INCLUDE(${CMAKE_MODULE_PATH}/external.cmake)
+INCLUDE(${CMAKE_MODULE_PATH}/create_define_option.cmake)
+INCLUDE(${CMAKE_MODULE_PATH}/dependencies.cmake)
 
 BASICCONFIGURATION()
 
 SET(PROJECT "${PrjName}")
 
 PROJECT(${PROJECT})
-
-INITEXTERNAL()
-INITIALIZEEXTERNAL()
-
-DEFINEMODULEQTDEPENDENCY()
-DEFINEMODULELINKDEPENDENCY()
-
-DEFINEEXTERNALINCLUDEDEPENDENCIES()
-DEFINEEXTERNALLINKDEPENDENCIES()
-
-# set cmake prefix path to Qt5 dir (required to find qt5)
-SET(CMAKE_PREFIX_PATH $ENV{QTDIR})
-
-LOADQTPACKAGES()
-
-set(CMAKE_AUTOMOC OFF)
 
 # set project dirs
 SET(PrjDir ${CMAKE_CURRENT_SOURCE_DIR})
@@ -46,10 +32,73 @@ SET(PrjMocDir ${PrjQtGenDir}/moc)
 SET(PrjUicDir ${PrjQtGenDir}/uic)
 SET(PrjQrcDir ${PrjQtGenDir}/qrc)
 
+INITEXTERNAL()
+INITIALIZEEXTERNAL()
+
+DEFINEMODULEQTDEPENDENCY()
+DEFINEMODULELINKDEPENDENCY()
+
+DEFINEEXTERNALINCLUDEDEPENDENCIES()
+DEFINEEXTERNALLINKDEPENDENCIES()
+
+# set cmake prefix path to Qt5 dir (required to find qt5)
+SET(CMAKE_PREFIX_PATH ${QT5_PATH})
+
+LOADQTPACKAGES()
+
+# set depedency binaries
+SET(PrjDbgBinaries)
+SET(PrjRelBinaries)
+COLLECTDEPBINS(PrjDbgBinaries PrjRelBinaries)
+COLLECTQTDEPBINS(PrjDbgBinaries PrjRelBinaries)
+
+FOREACH(PrjDbgBinary ${PrjDbgBinaries})
+    FILE(COPY ${PrjDbgBinary} DESTINATION ${PrjBinDir}/Debug)
+ENDFOREACH(PrjDbgBinary ${PrjDbgBinaries})
+
+FOREACH(PrjRelBinary ${PrjRelBinaries})
+    FILE(COPY ${PrjRelBinary} DESTINATION ${PrjBinDir}/Release)
+ENDFOREACH(PrjRelBinary ${PrjRelBinaries})
+
+SET(PrjDbgQtPlugins)
+SET(PrjRelQtPlugins)
+COLLECTQTPLUGINS(PrjDbgQtPlugins PrjRelQtPlugins)
+
+COPYQTPLUGINS(
+    REL_PLUGINS ${PrjRelQtPlugins} 
+    DBG_PLUGINS ${PrjDbgQtPlugins} 
+    REL_PATH ${PrjBinDir}/Release 
+    DBG_PATH ${PrjBinDir}/Debug)
+    
+# copy qss files
+FOREACH(PrjExecutable ${PrjExecutables})
+    SET(QSS_FILES)
+    FINDFILES(QSS_FILES ABSPATH ${PrjSrcDir}/${PrjExecutable} POSTFIXES qss)
+    FOREACH(QssFile ${QSS_FILES})
+        # MESSAGE(${QssFile})
+        FILE(RELATIVE_PATH RELATIVE_QSS_PATH  ${PrjSrcDir}/${PrjExecutable} ${QssFile})
+        CONFIGURE_FILE(${QssFile} ${PrjBinDir}/Debug/${PrjBinQssFolder}/${PrjExecutable}/${RELATIVE_QSS_PATH} COPYONLY)
+        CONFIGURE_FILE(${QssFile} ${PrjBinDir}/Release/${PrjBinQssFolder}/${PrjExecutable}/${RELATIVE_QSS_PATH} COPYONLY)
+    ENDFOREACH(QssFile ${QSS_FILES})
+ENDFOREACH(PrjExecutable ${PrjExecutables})
+
+FOREACH(PrjLibrary ${PrjLibraries})
+    SET(QSS_FILES)
+    FINDFILES(QSS_FILES ABSPATH ${PrjSrcDir}/${PrjLibrary} POSTFIXES qss)
+    FOREACH(QssFile ${QSS_FILES})
+        # MESSAGE(${QssFile})
+        FILE(RELATIVE_PATH RELATIVE_QSS_PATH  ${PrjSrcDir}/${PrjLibrary} ${QssFile})
+        CONFIGURE_FILE(${QssFile} ${PrjBinDir}/Debug/${PrjBinQssFolder}/${PrjLibrary}/${RELATIVE_QSS_PATH} COPYONLY)
+        CONFIGURE_FILE(${QssFile} ${PrjBinDir}/Release/${PrjBinQssFolder}/${PrjLibrary}/${RELATIVE_QSS_PATH} COPYONLY)
+    ENDFOREACH(QssFile ${QSS_FILES})
+ENDFOREACH(PrjLibrary ${PrjLibraries})
+    
+set(CMAKE_AUTOMOC OFF)
+
 # set project setting
 SET(PROJECT_USE_PROJECT_DEFINES_HEADER TRUE CACHE BOOL "True if the global defines header should be used.")
-SET(PROJECT_DYNAMIC FALSE CACHE BOOL "Build Modules as shared libs for executables or include all executables a subflder for each module.")
-SET(PROJECT_DEVELOP FALSE CACHE BOOL "Executables have a Console output for Debug and Release")
+SET(PROJECT_DYNAMIC TRUE CACHE BOOL "Build Modules as shared libs for executables or include all executables a subflder for each module.")
+SET(PROJECT_DEVELOP TRUE CACHE BOOL "Executables have a Console output for Debug and Release")
 SET(PROJECT_COMBINED_HEADER_SOURCES TRUE CACHE BOOL "If true combines header and sources into one folder in the project tree")
 SET(PROJECT_INSTALL_PATH "${PrjInsDir}" CACHE PATH "The Project install path")
 
@@ -112,8 +161,10 @@ ENDIF(${PROJECT_DYNAMIC})
 
 # set target properties on tagets (libs and exec)
 IF(MSVC)
-    # enable mulicore usage
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${USER_CXX_FLAGS} /MP")
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${USER_CXX_FLAGS} /INCREMENTAL:NO /MP /Zm1024")
+    SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /INCREMENTAL:NO  /Zm1024")
+    
+    DEFINEDEFINES()
     
     IF(${PROJECT_DYNAMIC})
         FOREACH(PrjLibrary ${PrjLibraries})
